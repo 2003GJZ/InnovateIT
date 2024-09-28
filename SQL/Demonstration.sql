@@ -1,28 +1,31 @@
--- 订单数据库
-CREATE DATABASE order_db
-CHARACTER SET = 'utf8mb4'
-COLLATE = 'utf8mb4_general_ci';
+-- 创建用户管理库，选择utf8编码
+CREATE DATABASE user_management_db
+CHARACTER SET = 'utf8'
+COLLATE = 'utf8_general_ci';
+
+-- 隔离级别
+SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 
 
--- 订单表
-CREATE TABLE order_record (
-                              order_id BIGINT AUTO_INCREMENT PRIMARY KEY,    -- 订单ID
-                              user_id BIGINT NOT NULL,                       -- 用户ID
-                              product_id BIGINT NOT NULL,                    -- 商品ID
-                              order_date DATETIME NOT NULL,                  -- 订单日期
-                              status TINYINT(1) NOT NULL DEFAULT 0,          -- 订单状态（0：待支付，1：已支付，2：已发货）
-                              amount DECIMAL(10, 2) NOT NULL,                -- 订单金额
-                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
-                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 更新时间
-                              INDEX idx_user_order (user_id, order_date)     -- 联合索引：user_id和order_date
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 商品信息表
-CREATE TABLE product (
-                         product_id BIGINT AUTO_INCREMENT PRIMARY KEY,  -- 商品ID
-                         product_name VARCHAR(255) NOT NULL,            -- 商品名称
-                         price DECIMAL(10, 2) NOT NULL,                 -- 商品价格
-                         stock INT NOT NULL,                            -- 库存数量
-                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
-                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE user_info (
+                           id BIGINT AUTO_INCREMENT PRIMARY KEY,         -- 主键，自增
+                           username VARCHAR(255) NOT NULL,               -- 用户名
+                           wechat_id VARCHAR(255),                       -- 绑定微信号
+                           email VARCHAR(255),                           -- 绑定邮箱
+                           phone VARCHAR(20) NOT NULL,                   -- 绑定电话号码，不能为空
+                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
+                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 更新时间
+                           UNIQUE KEY uq_email (email),                  -- 唯一约束：绑定邮箱
+                           UNIQUE KEY uq_phone (phone),                  -- 唯一约束：绑定电话
+                           UNIQUE KEY uq_wechat (wechat_id)              -- 唯一约束：绑定微信号
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE user_login (
+                            phone VARCHAR(20) PRIMARY KEY,                -- 主键：绑定电话（唯一）
+                            username VARCHAR(255) NOT NULL,               -- 用户名
+                            password VARCHAR(255) NOT NULL,               -- 密码
+                            user_info_id BIGINT,                          -- 个人信息表中的外键
+                            login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 登录时间
+                            FOREIGN KEY (user_info_id) REFERENCES user_info(id) -- 外键关联个人信息表
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
