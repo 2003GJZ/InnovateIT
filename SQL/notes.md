@@ -28,11 +28,11 @@
 3. 隔离级别配置：
     根据业务需求选择合适的隔离级别，并将建库建表语句**按照隔离级别**分入不同的文件夹下
 4. 字符集和排序规则：
-    建议使用 utf8mb4 字符集，支持完整的UTF-8编码（包括表情符号等），并使用 utf8mb4_general_ci 作为排序规则。
+    使用 utf8 字符集
     SQL语句示例：
-    CREATE DATABASE user_db
-    CHARACTER SET = 'utf8mb4'
-    COLLATE = 'utf8mb4_general_ci';
+   CREATE DATABASE user_management_db
+   CHARACTER SET = 'utf8'
+   COLLATE = 'utf8_general_ci';
 5. 分库与分表设计：
     对高并发和大数据量场景，建议进行分库分表。根据业务模型，确定如何对数据进行水平分片。常见的分片方式有：
     按用户ID分片：user_id % 分片数
