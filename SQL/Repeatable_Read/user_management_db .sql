@@ -7,7 +7,6 @@ COLLATE = 'utf8_general_ci';
 SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 
 
-
 CREATE TABLE user_info (
                            id BIGINT AUTO_INCREMENT PRIMARY KEY,         -- 主键，自增
                            username VARCHAR(255) NOT NULL,               -- 用户名
@@ -29,5 +28,3 @@ CREATE TABLE user_login (
                             login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 登录时间
                             INDEX idx_phone (phone)                       -- 为phone字段创建索引
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-
