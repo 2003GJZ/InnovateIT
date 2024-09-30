@@ -14,18 +14,20 @@ type Liability_Node struct { //责任链节点
 }
 
 type Liabilitylist struct {
+	initial         int    //初始长度
 	count           int    //责任链节点个数
 	bytes           []byte //责任判断链，最大限制链路长度为1024
 	liability_Nodes []Liability_Node
 }
 
-func NewLiabilitylist() *Liabilitylist {
+func NewLiabilitylist(initial int) *Liabilitylist {
 	//返回开辟的内存
 	return &Liabilitylist{
-		bytes:           make([]byte, 0),           //责任节点验证失败置为0
-		liability_Nodes: make([]Liability_Node, 0), //初始化责任链,初始长度
+		bytes:           make([]byte, initial),           //责任节点验证失败置为0
+		liability_Nodes: make([]Liability_Node, initial), //初始化责任链,初始长度
 		//切片动态扩容
 	}
+
 }
 
 func NewLiabilitylist_count(count int) *Liabilitylist {
@@ -38,7 +40,16 @@ func NewLiabilitylist_count(count int) *Liabilitylist {
 
 func (root *Liabilitylist) AddNode(dosth func(string) (error, string, string, byte, bool)) {
 	if dosth != nil {
-		root.liability_Nodes = append(root.liability_Nodes, Liability_Node{dosth: dosth})
+		if root.count < root.initial {
+
+			root.liability_Nodes[root.count] = Liability_Node{dosth: dosth}
+
+		} else {
+
+			root.liability_Nodes = append(root.liability_Nodes, Liability_Node{dosth: dosth})
+
+		}
+
 		root.count++
 	} else {
 		log.Println("dosth is nil")

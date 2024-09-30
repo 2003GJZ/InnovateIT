@@ -1,7 +1,9 @@
 package mylink
 
-var just_once bool
+var redis_just_once bool //redis 只连接测试，仅仅一次
+var configure *Config    //配置文件
 
+// MySQL 连接
 type MySQL struct {
 	Host     string `json:"host"`
 	Port     int    `json:"port"`

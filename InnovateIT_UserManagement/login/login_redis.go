@@ -20,7 +20,7 @@ func login_redis(string2 string) (error, string, string, byte, bool) { //查redi
 		return err2, "", "", 0, false
 	}
 
-	err2, link := mylink.NewredisLink("/home/gjz/项目/go/InnovateIT/Configuration/configure.json")
+	err2, link := mylink.NewredisLink(0)
 	if err2 != nil {
 		return err2, "", "", 0, false
 	}

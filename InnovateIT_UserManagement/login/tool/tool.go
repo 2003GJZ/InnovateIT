@@ -1,5 +1,6 @@
 package tool
 
+//工具类
 import (
 	"crypto/md5"
 	"encoding/hex"

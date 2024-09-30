@@ -5,7 +5,24 @@ import (
 	"log"
 )
 
-func mysqllink() {
+type Mysqllink struct {
+	Sqldb *sql.DB
+}
+
+func Newmysqllink() *sql.DB {
+	if configure == nil {
+		log.Fatal("配置文件未加载")
+		return nil
+	} else {
+		dsn := configure.MySQL.User + ":" + configure.MySQL.Password + "@tcp(" + string(configure.MySQL.Host) + ":" + string(configure.MySQL.Port) + ")/" + configure.MySQL.Database
+		db, err := sql.Open("mysql", dsn)
+		if err != nil {
+			log.Fatal(err)
+			return nil
+		}
+		return db
+	}
+
 	//创建数据库连接字符串
 
 }
