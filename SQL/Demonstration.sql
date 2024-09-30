@@ -17,15 +17,17 @@ CREATE TABLE user_info (
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 更新时间
                            UNIQUE KEY uq_email (email),                  -- 唯一约束：绑定邮箱
-                           UNIQUE KEY uq_phone (phone),                  -- 唯一约束：绑定电话
-                           UNIQUE KEY uq_wechat (wechat_id)              -- 唯一约束：绑定微信号
+                           UNIQUE KEY uq_wechat (wechat_id),             -- 唯一约束：绑定微信号
+                           UNIQUE KEY uq_phone (phone)                   -- 唯一约束：绑定电话号码
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE user_login (
-                            phone VARCHAR(20) PRIMARY KEY,                -- 主键：绑定电话（唯一）
+                            phone VARCHAR(20) NOT NULL PRIMARY KEY,       -- 主键：绑定电话（唯一且不能为空）
                             username VARCHAR(255) NOT NULL,               -- 用户名
                             password VARCHAR(255) NOT NULL,               -- 密码
-                            user_info_id BIGINT,                          -- 个人信息表中的外键
+                            user_info_id BIGINT,                          -- 个人信息表ID（在应用层处理关联）
                             login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 登录时间
-                            FOREIGN KEY (user_info_id) REFERENCES user_info(id) -- 外键关联个人信息表
+                            INDEX idx_phone (phone)                       -- 为phone字段创建索引
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
