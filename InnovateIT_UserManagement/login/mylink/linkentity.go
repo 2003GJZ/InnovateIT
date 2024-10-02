@@ -1,7 +1,10 @@
 package mylink
 
+import "database/sql"
+
 var redis_just_once bool //redis 只连接测试，仅仅一次
 var configure *Config    //配置文件
+var Sqldb *sql.DB
 
 // MySQL 连接
 type MySQL struct {

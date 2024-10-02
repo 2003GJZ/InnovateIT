@@ -25,17 +25,10 @@ func NewLiabilitylist(initial int) *Liabilitylist {
 	return &Liabilitylist{
 		bytes:           make([]byte, initial),           //责任节点验证失败置为0
 		liability_Nodes: make([]Liability_Node, initial), //初始化责任链,初始长度
+		initial:         initial,
 		//切片动态扩容
 	}
 
-}
-
-func NewLiabilitylist_count(count int) *Liabilitylist {
-	//返回开辟的内存
-	return &Liabilitylist{
-		bytes:           make([]byte, count),           //责任节点验证失败置为1
-		liability_Nodes: make([]Liability_Node, count), //初始化责任链,初始长度
-	}
 }
 
 func (root *Liabilitylist) AddNode(dosth func(string) (error, string, string, byte, bool)) {
@@ -56,13 +49,21 @@ func (root *Liabilitylist) AddNode(dosth func(string) (error, string, string, by
 	}
 }
 
+func (root *Liabilitylist) Addbyte(num int, b byte) {
+	if num < root.count {
+		root.bytes[num] = b
+	} else {
+		log.Println("index out of range")
+	}
+}
+
 func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (error, string, []byte) {
 	var outcomes string //结果集合，临时存储待处理字符串
 	var err error
 	var b byte
 	var goon bool
-	tmp := ags //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...
-
+	tmp := ags                            //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...
+	root.bytes = make([]byte, root.count) //重置责任链
 	//运行节点
 	for i := 0; i < root.count; i++ { // 只遍历有效节点
 		var outcome string
@@ -77,7 +78,7 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 			} else {
 				outcome = outcome + result_partition
 				outcomes += outcome
-				root.bytes = append(root.bytes, b) // 动态添加字节
+				root.Addbyte(i, b)
 			}
 			if !goon {
 				break

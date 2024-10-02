@@ -2,35 +2,16 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"login/mylink"
-	"login/tool"
 )
 
 func init() {
 	mylink.FileConfigJSON("/home/gjz/项目/go/login/configure.json") //初始化配置文件
+	fmt.Print("init")
 }
 
 func main() {
-
-	err2, link := mylink.NewredisLink(0)
-	if err2 != nil {
-		log.Fatalf("HGET error: %v", err2)
-	}
-
-	link.Client.HSet(link.Ctx, "login_phone", "123456789", tool.GetMd5("123456789"))
-
-	root := NewLiabilitylist(0)
-	root.AddNode(login_redis)
-	err2, s, bytes := root.RunNodeList("123456789$123456789$123456789", "%")
-	if err2 != nil {
-		log.Fatalf("HGET error: %v", err2)
-	}
-
-	//打印
-	fmt.Println(s)
-	fmt.Printf("%v\n", bytes)
-
+	fmt.Print("main")
 }
 
 //func login_mysql(string2 string) (error, string, string, byte, bool) { //查询数据库

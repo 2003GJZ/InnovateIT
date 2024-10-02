@@ -7,7 +7,7 @@ import (
 )
 
 // 读取配置文件
-func FileConfigJSON(configurl string) (error, *Config) {
+func FileConfigJSON(configurl string) (*Config, error) {
 	// 读取 JSON 配置文件
 	jsonData, err := ioutil.ReadFile(configurl)
 	if err != nil {
@@ -25,5 +25,5 @@ func FileConfigJSON(configurl string) (error, *Config) {
 	log.Printf("MySQL 主机: %s, 端口: %d, 用户: %s, 密码: %s, 数据库: %s\n",
 		configure.MySQL.Host, configure.MySQL.Port, configure.MySQL.User, configure.MySQL.Password, configure.MySQL.Database)
 
-	return err, configure
+	return configure, err
 }
