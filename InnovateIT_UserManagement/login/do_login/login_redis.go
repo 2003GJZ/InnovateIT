@@ -1,15 +1,15 @@
-package main
+package do_login
 
 import (
+	"InnovateIT_UserManagement/mylink"
+	"InnovateIT_UserManagement/tool"
 	"github.com/go-redis/redis/v8"
 	"log"
-	"login/mylink"
-	"login/tool"
 )
 
 // phone $ password
 // xxxx$hjjhjjh$
-func login_redis(string2 string) (error, string, string, byte, bool) { //查redis
+func Login_redis(string2 string) (error, string, string, byte, bool) { //查redis
 
 	phone, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {
@@ -33,7 +33,6 @@ func login_redis(string2 string) (error, string, string, byte, bool) { //查redi
 
 	} else if err != nil {
 		log.Fatalf("HGET error: %v", err)
-
 	}
 
 	compareMD5 := tool.CompareMD5(password, passwordMd5)

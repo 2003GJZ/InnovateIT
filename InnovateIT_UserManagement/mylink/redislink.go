@@ -52,3 +52,7 @@ func NewredisLink(databasenum int) (*RedisLink, error) {
 
 	return redislink, nil
 }
+
+func GetredisLink() (*RedisLink, error) {
+	return NewredisLink(0)
+}

@@ -1,4 +1,4 @@
-package main
+package tool
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 
 type Liability_Node struct { //责任链节点
 	dosth func(string) (error, string, string, byte, bool) //处理函数  返回值：错误，结果，传给下一个节点参数，责任节点验证失败置为0,是否继续执行,true继续，false终止
-
 	//短链接跳转指针
 	next *Liability_Node //下一个节点
 	last *Liability_Node //上一个节点
@@ -62,7 +61,7 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 	var err error
 	var b byte
 	var goon bool
-	tmp := ags                            //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...
+	tmp := ags                            //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...$
 	root.bytes = make([]byte, root.count) //重置责任链
 	//运行节点
 	for i := 0; i < root.count; i++ { // 只遍历有效节点
