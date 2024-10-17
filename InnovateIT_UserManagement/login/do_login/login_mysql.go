@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Login_mysql(string2 string) (error, string, string, byte, bool) {
+func Login_mysql_phone(string2 string) (error, string, string, byte, bool) {
 	//字符串切割
 	phone, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {
@@ -39,7 +39,7 @@ func Login_mysql(string2 string) (error, string, string, byte, bool) {
 		succeed = 1
 		fan = "ok"
 		//写给下一个,更新缓存
-		s2 = phone + "$" + passwordMD5
+		s2 = phone + "$" + passwordMD5 + "$"
 	} else {
 		s2 = phone + "$nil$" //避免缓存失效
 	}

@@ -5,7 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-func Updatacache(string2 string) (error, string, string, byte, bool) {
+func Login_updatacache_phone(string2 string) (error, string, string, byte, bool) {
 	//字符串切割
 	phone, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {

@@ -3,13 +3,11 @@ package do_login
 import (
 	"InnovateIT_UserManagement/mylink"
 	"InnovateIT_UserManagement/tool"
-	"github.com/go-redis/redis/v8"
-	"log"
 )
 
 // phone $ password
 // xxxx$hjjhjjh$
-func Login_redis(string2 string) (error, string, string, byte, bool) { //查redis
+func Login_redis_phone(string2 string) (error, string, string, byte, bool) { //查redis
 
 	phone, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {
@@ -24,15 +22,13 @@ func Login_redis(string2 string) (error, string, string, byte, bool) { //查redi
 	if err2 != nil {
 		return err2, "", "", 0, false
 	}
-
+	var passwordMd5 string
 	// 使用HGet获取哈希表的字段值
-	passwordMd5, err := link.Client.HGet(link.Ctx, "login_phone", phone).Result()
-	if err == redis.Nil {
+	link.Client.HGet(link.Ctx, "login_phone", phone).Scan(&passwordMd5)
+	if passwordMd5 == "" {
 
 		return nil, "", phone + "$" + password + "$" + s2, 0, true //缓存无找数据库
 
-	} else if err != nil {
-		log.Fatalf("HGET error: %v", err)
 	}
 
 	compareMD5 := tool.CompareMD5(password, passwordMd5)

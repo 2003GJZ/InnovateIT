@@ -28,3 +28,13 @@ CREATE TABLE user_login (
                             login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 登录时间
                             INDEX idx_phone (phone)                       -- 为phone字段创建索引
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE user_email_login (
+                                  email VARCHAR(255) NOT NULL PRIMARY KEY,      -- 主键：绑定邮箱（唯一且不能为空）
+                                  username VARCHAR(255) NOT NULL,               -- 用户名
+                                  password VARCHAR(255) NOT NULL,               -- 密码
+                                  user_info_id BIGINT,                          -- 个人信息表中的ID，用于在应用层处理关联
+                                  login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 登录时间
+                                  UNIQUE KEY uq_email (email),                  -- 为邮箱创建唯一约束
+                                  INDEX idx_email (email)                       -- 为邮箱字段创建索引
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

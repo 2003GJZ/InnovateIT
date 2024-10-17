@@ -6,10 +6,17 @@ import (
 )
 
 type Liability_Node struct { //责任链节点
-	dosth func(string) (error, string, string, byte, bool) //处理函数  返回值：错误，结果，传给下一个节点参数，责任节点验证失败置为0,是否继续执行,true继续，false终止
+	dosth func(string) (error, string, string, byte, bool) /*处理函数
+	返回值：
+	error错误，
+	string结果，
+	string传给下一个节点参数，
+	byte责任节点验证失败置为0,成功置为1;特别的如果需要跳转则 n 表示跳转一个n/2节点（取整） ,如果n为偶数则节点验证失败，反之则节点验证成功
+	是否继续执行,true继续，false终止
+	*/
 	//短链接跳转指针
-	next *Liability_Node //下一个节点
-	last *Liability_Node //上一个节点
+	next *Liability_Node //下一个节点 短链接跳转 暂未启用
+	last *Liability_Node //上一个节点 短链接回跳
 }
 
 type Liabilitylist struct {
@@ -62,7 +69,7 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 	var b byte
 	var goon bool
 	tmp := ags                            //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...$
-	root.bytes = make([]byte, root.count) //重置责任链
+	root.bytes = make([]byte, root.count) //初始化责任链处理
 	//运行节点
 	for i := 0; i < root.count; i++ { // 只遍历有效节点
 		var outcome string
@@ -72,6 +79,7 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 
 		if root.liability_Nodes[i].dosth != nil {
 			err, outcome, tmp, b, goon = root.liability_Nodes[i].dosth(tmp)
+
 			if err != nil {
 				return err, outcomes, nil
 			} else {
@@ -79,8 +87,13 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 				outcomes += outcome
 				root.Addbyte(i, b)
 			}
+
 			if !goon {
 				break
+			}
+
+			if b > 1 {
+				i += int(b/2) - 1
 			}
 
 		}

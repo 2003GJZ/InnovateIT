@@ -19,15 +19,12 @@ func TestRedis(t *testing.T) {
 
 }
 func Test_test(t *testing.T) {
-	mylink.FileConfigJSON("/home/gjz/项目/go/InnovateIT1/Configuration/configure.json") //初始化配置文件
-	mylink.NewredisLink(0)                                                            //初始化redis
-	mylink.NewmysqlLink()                                                             //初始化mysql
-	fmt.Print("init")
+
 	root := tool.NewLiabilitylist(8)
-	root.AddNode(do_login.Login_redis)
-	root.AddNode(do_login.Login_mysql)
-	root.AddNode(do_login.Updatacache)
-	err2, s, bytes := root.RunNodeList("987654321$areyouok1111255595$", "$")
+	root.AddNode(do_login.Login_redis_phone)
+	root.AddNode(do_login.Login_mysql_phone)
+	root.AddNode(do_login.Login_updatacache_phone)
+	err2, s, bytes := root.RunNodeList("98765432$areyouok111125595$", "$")
 
 	if err2 != nil {
 		log.Fatalf("HGET error: %v", err2)
@@ -47,7 +44,7 @@ func TestMysql(t *testing.T) {
 	defer mysqllink.Close() // 确保在函数结束时关闭数据库连接
 
 	query := "INSERT INTO user_login(phone, username, password) VALUES (?, ?, ?)"
-	_, err = mysqllink.Exec(query, "987654321", "test", tool.GetMd5("areyouok1111255595")) // 使用Exec来执行插入操作
+	_, err = mysqllink.Exec(query, "98765432", "test", tool.GetMd5("areyouok111125595")) // 使用Exec来执行插入操作
 	if err != nil {
 		// 插入操作失败
 		t.Errorf("Failed to insert data into user_login: %v", err)

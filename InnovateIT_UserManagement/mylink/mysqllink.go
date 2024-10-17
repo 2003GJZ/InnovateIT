@@ -5,19 +5,6 @@ import (
 	"fmt"
 )
 
-//func Newmysqllink() (*sql.DB, error) {
-//	// 请根据实际情况修改以下DSN
-//	dsn := "gjz:20030220@tcp(127.0.0.1:3306)/user_management_db"
-//	db, err := sql.Open("mysql", dsn)
-//	if err != nil {
-//		return nil, err
-//	}
-//	if err = db.Ping(); err != nil { // 检查连接
-//		return nil, err
-//	}
-//	return db, nil
-//}
-
 func NewmysqlLink() (*sql.DB, error) {
 	if Sqldb == nil {
 		if configure == nil {
@@ -60,14 +47,3 @@ func GetSqldb() (*sql.DB, error) {
 	}
 	return Sqldb, nil
 }
-
-//func connectDB() (*sql.DB, error) {
-//	dsn := "用户名:密码@tcp(127.0.0.1:3306)/数据库名"
-//	db, err := sql.Open("mysql", dsn)
-//	if err != nil {
-//		log.Printf("连接数据库失败: %v", err)
-//		return nil, err
-//	}
-//	log.Println("数据库连接成功")
-//	return db, nil
-//}
