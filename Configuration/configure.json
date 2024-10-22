@@ -10,5 +10,11 @@
     "user": "gjz",
     "password": "20030220",
     "database": "myapp"
+  },
+  "email": {
+    "host": "smtp.qq.com",
+    "port": 465,
+    "user": "1820284294@qq.com",
+    "password": "dhielscygzirdfea"
   }
 }

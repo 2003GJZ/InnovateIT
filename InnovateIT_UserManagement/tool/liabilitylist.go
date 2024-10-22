@@ -6,13 +6,14 @@ import (
 )
 
 type Liability_Node struct { //责任链节点
-	dosth func(string) (error, string, string, byte, bool) /*处理函数
+	dosth func(string) (error, Outcome) /*处理函数
 	返回值：
-	error错误，
-	string结果，
-	string传给下一个节点参数，
-	byte责任节点验证失败置为0,成功置为1;特别的如果需要跳转则 n 表示跳转一个n/2节点（取整） ,如果n为偶数则节点验证失败，反之则节点验证成功
-	是否继续执行,true继续，false终止
+	error错误；
+	outcome：
+	   string结果，
+	   string传给下一个节点参数，
+	   byte责任节点验证失败置为0,成功置为1;特别的如果需要跳转则 n 表示跳转一个n/2节点（取整） ,如果n为偶数则节点验证失败，反之则节点验证成功
+	   是否继续执行,true继续，false终止
 	*/
 	//短链接跳转指针
 	next *Liability_Node //下一个节点 短链接跳转 暂未启用

@@ -6,21 +6,22 @@ import (
 	"database/sql"
 )
 
-//验证唯一性registration_unique
+//链路1 TODO email$
+//验证唯一性registration_captcha
 //TODO 查询缓存 email_username 将username计算md5，没有为 "NULL"       --------
 //					   													|
 //TODO 查询数据库															|
-//TODO 插入缓存 email_username 将email计算md5 							|
+//TODO 插入缓存 email_username 将email计算md5 								|
 //																		|
+//TODO 验证码验证(发送)
 
-//TODO 验证码验证
-//TODO 清除缓存 email_username
-
+//链路2
 //正式加添
+//TODO 验证码验证(验证)
+//TODO 清除缓存 email_username
 //TODO 插入数据库
-
+//
 //缓存一致性保证
-
 //TODO 再次查询数据库
 //TODO 刷新缓存 email_username login_email
 
@@ -65,9 +66,14 @@ func Unique_email_redis(ags string) (error, string, string, byte, bool) {
 	var username string
 	link.Client.HGet(link.Ctx, "email_username", email).Scan(&username)
 	log := "Unique_email_redis:"
-	if username == "" || username == "NULL" {
+	if username == "NULL" {
+		//不存在可以注册
 		log += "ok"
 		return nil, log, ags, 5, true
+	} else if username == "" {
+		//未找到查询数据库
+		log += "not in redis, select database"
+		return nil, log, ags, 1, true
 	}
 	log += "已存在"
 	return nil, log, "", 0, false

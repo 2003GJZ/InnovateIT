@@ -5,7 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-// 加添缓存
+// 加添缓存，查看是否有该用户
 func Addcache_email(string2 string) (error, string, string, byte, bool) {
 	email, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {

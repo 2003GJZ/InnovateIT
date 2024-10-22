@@ -5,6 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
+// 插入数据库
 func Addmysql_email(string2 string) (error, string, string, byte, bool) {
 	email, s, err2 := tool.SplitString(string2, "$")
 	if err2 != nil {
