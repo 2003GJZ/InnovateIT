@@ -38,7 +38,7 @@ func NewLiabilitylist(initial int) *Liabilitylist {
 
 }
 
-func (root *Liabilitylist) AddNode(dosth func(string) (error, string, string, byte, bool)) {
+func (root *Liabilitylist) AddNode(dosth func(string) (error, Outcome)) {
 	if dosth != nil {
 		if root.count < root.initial {
 
@@ -67,34 +67,32 @@ func (root *Liabilitylist) Addbyte(num int, b byte) {
 func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (error, string, []byte) {
 	var outcomes string //结果集合，临时存储待处理字符串
 	var err error
-	var b byte
-	var goon bool
+	var outcometmp Outcome
 	tmp := ags                            //处理完后，把内容更新传递给下一个   责任节点1任务$责任节点2任务$责任节点3任务$...$
 	root.bytes = make([]byte, root.count) //初始化责任链处理
 	//运行节点
 	for i := 0; i < root.count; i++ { // 只遍历有效节点
-		var outcome string
 		if tmp == "" {
 			return fmt.Errorf("string exception"), outcomes, root.bytes[:len(root.bytes)] // 返回已使用的部分
 		}
 
 		if root.liability_Nodes[i].dosth != nil {
-			err, outcome, tmp, b, goon = root.liability_Nodes[i].dosth(tmp)
+			err, outcometmp = root.liability_Nodes[i].dosth(tmp)
 
 			if err != nil {
 				return err, outcomes, nil
 			} else {
-				outcome = outcome + result_partition
-				outcomes += outcome
-				root.Addbyte(i, b)
+
+				outcomes += outcometmp.Output + result_partition
+				root.Addbyte(i, outcometmp.Bitmap)
 			}
 
-			if !goon {
+			if !outcometmp.Goon {
 				break
 			}
 
-			if b > 1 {
-				i += int(b/2) - 1
+			if outcometmp.Bitmap > 1 {
+				i += int(outcometmp.Bitmap/2) - 1
 			}
 
 		}

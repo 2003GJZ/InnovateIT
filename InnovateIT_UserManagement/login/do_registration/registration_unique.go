@@ -10,8 +10,8 @@ import (
 //验证唯一性registration_captcha
 //TODO 查询缓存 email_username 将username计算md5，没有为 "NULL"       --------
 //					   													|
-//TODO 查询数据库															|
-//TODO 插入缓存 email_username 将email计算md5 								|
+//TODO 查询数据库														|
+//TODO 插入缓存 email_username 将name计算md5 没有为"NULL"					|
 //																		|
 //TODO 验证码验证(发送)
 
@@ -67,6 +67,7 @@ func Unique_email_redis(ags string) (error, string, string, byte, bool) {
 	link.Client.HGet(link.Ctx, "email_username", email).Scan(&username)
 	log := "Unique_email_redis:"
 	if username == "NULL" {
+
 		//不存在可以注册
 		log += "ok"
 		return nil, log, ags, 5, true

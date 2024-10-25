@@ -1,8 +1,6 @@
 package do_registration
 
 import (
-	"InnovateIT_UserManagement/mylink"
-	"InnovateIT_UserManagement/tool"
 	"crypto/rand"
 	"fmt"
 	"gopkg.in/gomail.v2"
@@ -45,19 +43,28 @@ func sendEmail(to string, code string) error {
 }
 
 // 验证码发送
-func Captcha_email(ags string) (error, string, string, byte, bool) {
-
-	log := "Captcha_email:"
-	//先查redis看是否存在
-	link, _ := mylink.NewredisLink(0)
-	email, _, _ := tool.SplitString(ags, "$")
-	Captcha := link.Client.HGet(link.Ctx, "email_captcha", email)
-	if Captcha.Err() == nil {
-		//表示存在，则验证验证码
-		log += "验证码存在"
-		return nil, "", "", 0, false
-	}
-
-}
+//func Captcha_email_send(ags string) (error, tool.Outcome) {
+//
+//	logs := "Captcha_email_send:"
+//	outcometmp := tool.Outcome{
+//		logs, "", 0, false,
+//	}
+//	//先查redis看是否存在
+//	link, _ := mylink.NewredisLink(0)
+//	email, _, _ := tool.SplitString(ags, "$")
+//	//获取验证码
+//	var captcha string
+//	link.Client.HGet(link.Ctx, "email_captcha", email).Scan(&captcha)
+//	if captcha != "" {
+//		//表示存在，则无需再次发送验证码
+//		outcometmp.Output=logs+"验证码存在"
+//		outcometmp.Bitmap=0
+//		outcometmp.Goon=false
+//		return nil,outcometmp
+//	}else {
+//		//否则发送验证码
+//	}
+//
+//}
 
 //
