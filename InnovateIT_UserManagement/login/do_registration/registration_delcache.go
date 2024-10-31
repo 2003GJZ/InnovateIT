@@ -5,7 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-// 清除缓存
+// 2.2清除缓存 email_username   邮箱$用户名$密码----->邮箱$用户名$密码
 func Delcache_email(string2 string) (error, tool.Outcome) {
 	logs := "Delcache_email:"
 	outcometmp := tool.Outcome{
@@ -16,15 +16,19 @@ func Delcache_email(string2 string) (error, tool.Outcome) {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
-	link, err2 := mylink.NewredisLink(0)
-	if err2 != nil {
+	link, err3 := mylink.NewredisLink(0)
+	if err3 != nil {
 		outcometmp.Output = logs + " redis Link err"
-		return err2, outcometmp
+		return err3, outcometmp
+	}
+	htable := tool.Redis_htable{
+		Htabname:   "email_username ",
+		Redis_link: link,
 	}
 	outcometmp.Output = logs + "ok"
 	outcometmp.Bitmap = 1
 	outcometmp.Goon = true
 	outcometmp.Nextinput = string2
-	link.Client.HDel(link.Ctx, "email_username", email)
+	htable.Delete_caching(email)
 	return nil, outcometmp
 }

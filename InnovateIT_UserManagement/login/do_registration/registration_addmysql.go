@@ -5,7 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-// 插入数据库
+// 2.3插入数据库    邮箱$用户名$密码----->邮箱$$用户名$密码
 func Addmysql_email(string2 string) (error, tool.Outcome) {
 
 	logs := "Addmysql_email:"
@@ -13,18 +13,16 @@ func Addmysql_email(string2 string) (error, tool.Outcome) {
 		logs, "", 0, false,
 	}
 	email, s, err2 := tool.SplitString(string2, "$")
-	if err2 != nil {
+	password, s2, err3 := tool.SplitString(s, "$")
+	user, _, err4 := tool.SplitString(s2, "$")
+	if err2 != nil || err3 != nil || err4 != nil {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
-	password, s2, err2 := tool.SplitString(s, "$")
-	if err2 != nil {
-		outcometmp.Output = logs + "SplitStringERR"
-		return err2, outcometmp
-	}
-	user, _, err2 := tool.SplitString(s2, "$")
+
 	//md5计算
 	passwordMD5 := tool.GetMd5(password)
+
 	//新增到user_email_login表
 	query := "INSERT INTO user_email_login (email,password,username) VALUES (?,?,?)"
 	err := mylink.Sqldb.QueryRow(query, email, passwordMD5, user).Scan(&passwordMD5)

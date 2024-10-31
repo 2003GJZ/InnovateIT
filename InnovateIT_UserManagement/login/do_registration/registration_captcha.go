@@ -1,6 +1,8 @@
 package do_registration
 
 import (
+	"InnovateIT_UserManagement/mylink"
+	"InnovateIT_UserManagement/tool"
 	"crypto/rand"
 	"fmt"
 	"gopkg.in/gomail.v2"
@@ -42,29 +44,90 @@ func sendEmail(to string, code string) error {
 	return nil
 }
 
-// 验证码发送
-//func Captcha_email_send(ags string) (error, tool.Outcome) {
-//
-//	logs := "Captcha_email_send:"
-//	outcometmp := tool.Outcome{
-//		logs, "", 0, false,
-//	}
-//	//先查redis看是否存在
-//	link, _ := mylink.NewredisLink(0)
-//	email, _, _ := tool.SplitString(ags, "$")
-//	//获取验证码
-//	var captcha string
-//	link.Client.HGet(link.Ctx, "email_captcha", email).Scan(&captcha)
-//	if captcha != "" {
-//		//表示存在，则无需再次发送验证码
-//		outcometmp.Output=logs+"验证码存在"
-//		outcometmp.Bitmap=0
-//		outcometmp.Goon=false
-//		return nil,outcometmp
-//	}else {
-//		//否则发送验证码
-//	}
-//
-//}
+// 1.4验证码发送   邮箱$
+func Captcha_email_send(ags string) (error, tool.Outcome) {
 
-//
+	logs := "Captcha_email_send:"
+	outcometmp := tool.Outcome{
+		logs, "", 0, false,
+	}
+	//先查redis看是否存在
+	link, _ := mylink.NewredisLink(0)
+	email, _, err := tool.SplitString(ags, "$")
+	if err != nil {
+		outcometmp.Output = logs + "参数解析错误"
+		outcometmp.Bitmap = 0
+		outcometmp.Goon = false
+		return nil, outcometmp
+	}
+	htable := tool.Redis_htable{
+		Htabname:   "email_captcha",
+		Redis_link: link,
+	}
+	//获取验证码
+	captcha := htable.Query_caching(email)
+	if captcha != "" {
+		//表示存在，则无需再次发送验证码
+		outcometmp.Output = logs + "验证码存在"
+		outcometmp.Bitmap = 0
+		outcometmp.Goon = false
+
+	} else {
+		//否则发送验证码
+		//生成验证码
+		code := generateCode()
+		//调用验证码发送
+		err := sendEmail(email, code)
+		if err != nil {
+			outcometmp.Output = logs + "验证码发送失败"
+			outcometmp.Bitmap = 0
+			outcometmp.Goon = false
+		} else {
+			outcometmp.Output = logs + "验证码发送成功" + " <code:" + code + ">"
+			outcometmp.Bitmap = 1
+			outcometmp.Goon = true
+			outcometmp.Nextinput = ags
+			//加入缓存
+			htable.Insert_caching(email, code)
+		}
+	}
+	return nil, outcometmp
+}
+
+// 验证验证码 邮箱$验证码$用户名$密码------->邮箱$用户名$密码
+func Captcha_email_verify(ags string) (error, tool.Outcome) {
+	logs := "Captcha_email_verify:"
+	outcometmp := tool.Outcome{
+		logs, "", 0, false,
+	}
+	//先查redis看是否存在
+	link, _ := mylink.NewredisLink(0)
+	email, s2, err := tool.SplitString(ags, "$")
+	code, s3, err1 := tool.SplitString(s2, "$")
+
+	if err != nil || err1 != nil {
+		outcometmp.Output = logs + "参数解析错误"
+		outcometmp.Bitmap = 0
+		outcometmp.Goon = false
+		return nil, outcometmp
+	}
+
+	htable := tool.Redis_htable{
+		Htabname:   "email_captcha",
+		Redis_link: link,
+	}
+
+	captcha := htable.Query_caching(email)
+	if captcha == code {
+		outcometmp.Output = logs + "验证码正确"
+		outcometmp.Bitmap = 1
+		outcometmp.Goon = true
+	} else {
+		outcometmp.Output = logs + "验证码错误"
+		outcometmp.Bitmap = 0
+		outcometmp.Goon = false
+	}
+	outcometmp.Nextinput = email + "$" + s3
+
+	return nil, outcometmp
+}

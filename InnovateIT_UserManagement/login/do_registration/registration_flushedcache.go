@@ -5,10 +5,8 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-//registration_flushedcache.go
-
-// 1.3加添缓存，查看是否有该用户 邮箱$md5(用户名)or NULL----->邮箱$XXX
-func Addcache_email(string2 string) (error, tool.Outcome) {
+// 2.5刷新缓存 email_username 邮箱$md5(用户名)or NULL----->邮箱$XXX
+func Flushedcache_email(string2 string) (error, tool.Outcome) {
 	//将mysql查到的信息加入缓存
 	logs := "Addcache_email:"
 	outcometmp := tool.Outcome{

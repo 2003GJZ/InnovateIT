@@ -12,12 +12,8 @@ func Login_updatacache_phone(string2 string) (error, tool.Outcome) {
 	}
 	//字符串切割
 	phone, s, err2 := tool.SplitString(string2, "$")
-	if err2 != nil {
-		outcometmp.Output = logs + "SplitStringERR"
-		return err2, outcometmp
-	}
-	password, s2, err2 := tool.SplitString(s, "$")
-	if err2 != nil {
+	password, s2, err3 := tool.SplitString(s, "$")
+	if err2 != nil || err3 != nil {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}

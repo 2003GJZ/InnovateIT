@@ -15,14 +15,8 @@ func Login_mysql_phone(string2 string) (error, tool.Outcome) {
 		"", "", 0, false,
 	}
 	phone, s, err2 := tool.SplitString(string2, "$")
-
-	if err2 != nil {
-		logs += "SplitStringERR"
-		outcometmp.Output = logs
-		return err2, outcometmp
-	}
-	password, s2, err2 := tool.SplitString(s, "$")
-	if err2 != nil {
+	password, s2, err3 := tool.SplitString(s, "$")
+	if err2 != nil || err3 != nil {
 		logs += "SplitStringERR"
 		outcometmp.Output = logs
 		return err2, outcometmp

@@ -13,19 +13,15 @@ func Login_redis_phone(string2 string) (error, tool.Outcome) { //查redis
 		logs, "", 0, false,
 	}
 	phone, s, err2 := tool.SplitString(string2, "$")
-	if err2 != nil {
-		outcometmp.Output = logs + "SplitStringERR"
-		return err2, outcometmp
-	}
-	password, s2, err2 := tool.SplitString(s, "$")
-	if err2 != nil {
+	password, s2, err3 := tool.SplitString(s, "$")
+	if err2 != nil || err3 != nil {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
 
-	link, err2 := mylink.NewredisLink(0)
-	if err2 != nil {
-		outcometmp.Output = logs + "SplitStringERR"
+	link, err4 := mylink.NewredisLink(0)
+	if err4 != nil {
+		outcometmp.Output = logs + "redis link ERR"
 		return err2, outcometmp
 	}
 	var passwordMd5 string
