@@ -1,6 +1,9 @@
 package mylink
 
-import "database/sql"
+import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+)
 
 var redis_just_once bool //redis 只连接测试，仅仅一次
 var configure *Config    //配置文件
