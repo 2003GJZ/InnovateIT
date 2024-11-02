@@ -5,33 +5,41 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-// 2.5刷新缓存 email_username 邮箱$md5(用户名)or NULL----->邮箱$XXX
+// 2.5刷新缓存 (email_username) 邮箱$md5(用户名)or NULL$用户名$密码----->邮箱$用户名$密码
 func Flushedcache_email(string2 string) (error, tool.Outcome) {
-	//将mysql查到的信息加入缓存
-	logs := "Addcache_email:"
+	//1.3_将mysql查到的信息加入缓存
+	logs := "Flushedcache_email:"
 	outcometmp := tool.Outcome{
 		logs, "", 0, false,
 	}
 	email, s, err2 := tool.SplitString(string2, "$")
 	usernameMd5, s2, err3 := tool.SplitString(s, "$")
-	if err2 != nil || err3 != nil {
+	username, s3, err4 := tool.SplitString(s2, "$")
+	password, _, err5 := tool.SplitString(s3, "$")
+	if err2 != nil || err3 != nil || err4 != nil || err5 != nil {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
-	log := "Addcache_email:"
+
 	link, _ := mylink.NewredisLink(0)
-	link.Client.HSet(link.Ctx, "email_username", email, usernameMd5)
-	log += "ok"
+	htable := tool.Redis_htable{
+		"email_username",
+		link,
+	}
+	htable.Insert_caching(email, usernameMd5) //插入缓存email_username
+	//TODO 后面改成token
 	if usernameMd5 == "NULL" {
-		//不存在可以继续注册
+		//插入失败更新缓存
 		outcometmp.Goon = true
-		s2 = email + "$" + s2
-		outcometmp.Output = logs + "The user is not registered"
-		outcometmp.Nextinput = s2
+		outcometmp.Nextinput = email + "$" + username + "$" + "NULL"
+		outcometmp.Output = logs + "插入失败"
+
 	} else {
-		//存在不再继续注册
-		outcometmp.Goon = false
-		outcometmp.Output = logs + "The user is registered"
+		//1.3_存在不再继续注册
+		outcometmp.Goon = true
+		outcometmp.Nextinput = email + "$" + username + "$" + password
+		outcometmp.Output = logs + "注册成功缓存已插入"
+
 	}
 	return nil, outcometmp
 }

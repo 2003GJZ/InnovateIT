@@ -5,7 +5,7 @@ import (
 	"InnovateIT_UserManagement/tool"
 )
 
-// 2.3插入数据库    邮箱$用户名$密码----->邮箱$$用户名$密码
+// 2.3插入数据库    邮箱$用户名$密码----->邮箱$用户名$密码
 func Addmysql_email(string2 string) (error, tool.Outcome) {
 
 	logs := "Addmysql_email:"
@@ -25,7 +25,7 @@ func Addmysql_email(string2 string) (error, tool.Outcome) {
 
 	//新增到user_email_login表
 	query := "INSERT INTO user_email_login (email,password,username) VALUES (?,?,?)"
-	err := mylink.Sqldb.QueryRow(query, email, passwordMD5, user).Scan(&passwordMD5)
+	err := mylink.Sqldb.QueryRow(query, email, passwordMD5, user)
 	if err != nil {
 		//注册失败，刷新缓存
 		outcometmp.Output = logs + "注册失败"

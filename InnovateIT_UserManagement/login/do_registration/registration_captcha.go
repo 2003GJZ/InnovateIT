@@ -94,7 +94,7 @@ func Captcha_email_send(ags string) (error, tool.Outcome) {
 	return nil, outcometmp
 }
 
-// 验证验证码 邮箱$验证码$用户名$密码------->邮箱$用户名$密码
+// 2.1证验证码 邮箱$验证码$用户名$密码------->邮箱$用户名$密码
 func Captcha_email_verify(ags string) (error, tool.Outcome) {
 	logs := "Captcha_email_verify:"
 	outcometmp := tool.Outcome{

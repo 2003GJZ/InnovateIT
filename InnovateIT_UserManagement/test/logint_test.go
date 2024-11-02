@@ -24,7 +24,7 @@ func Test_test(t *testing.T) {
 	root.AddNode(do_login.Login_redis_phone)
 	root.AddNode(do_login.Login_mysql_phone)
 	root.AddNode(do_login.Login_updatacache_phone)
-	err2, s, bytes := root.RunNodeList("98765432$areyouok111125595$", "$")
+	err2, s, bytes := root.RunNodeList("4551555145$areydssok111125595$", "$")
 
 	if err2 != nil {
 		log.Fatalf("HGET error: %v", err2)
@@ -44,7 +44,7 @@ func TestMysql(t *testing.T) {
 	defer mysqllink.Close() // 确保在函数结束时关闭数据库连接
 
 	query := "INSERT INTO user_login(phone, username, password) VALUES (?, ?, ?)"
-	_, err = mysqllink.Exec(query, "98765432", "test", tool.GetMd5("areyouok111125595")) // 使用Exec来执行插入操作
+	_, err = mysqllink.Exec(query, "4551555145", "test1", tool.GetMd5("areyouok111125595")) // 使用Exec来执行插入操作
 	if err != nil {
 		// 插入操作失败
 		t.Errorf("Failed to insert data into user_login: %v", err)

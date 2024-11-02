@@ -7,7 +7,8 @@ import (
 
 //registration_flushedcache.go
 
-// 1.3加添缓存，查看是否有该用户 邮箱$md5(用户名)or NULL----->邮箱$XXX
+// 1.3加添缓存，查看是否有该用户(email_username) 邮箱$md5(用户名)or NULL$用户名$密码----->邮箱$用户名$密码
+
 func Addcache_email(string2 string) (error, tool.Outcome) {
 	//将mysql查到的信息加入缓存
 	logs := "Addcache_email:"
@@ -20,10 +21,14 @@ func Addcache_email(string2 string) (error, tool.Outcome) {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
-	log := "Addcache_email:"
+
 	link, _ := mylink.NewredisLink(0)
-	link.Client.HSet(link.Ctx, "email_username", email, usernameMd5)
-	log += "ok"
+	htable := tool.Redis_htable{
+		"email_username",
+		link,
+	}
+	htable.Insert_caching(email, usernameMd5) //插入缓存email_username
+
 	if usernameMd5 == "NULL" {
 		//不存在可以继续注册
 		outcometmp.Goon = true

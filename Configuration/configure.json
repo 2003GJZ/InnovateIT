@@ -9,7 +9,7 @@
     "port": 3306,
     "user": "gjz",
     "password": "20030220",
-    "database": "myapp"
+    "database": "user_management_db"
   },
   "email": {
     "host": "smtp.qq.com",

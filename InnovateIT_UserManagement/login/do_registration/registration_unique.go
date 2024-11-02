@@ -25,8 +25,8 @@ import (
 //TODO 2.5刷新缓存 email_username
 // 2.6将缓存写入 login_email
 
-// 1.2查询数据库 邮箱$---->邮箱$md5(用户名)or NULL
-// 2.4再次查询数据库
+// 1.2查询数据库 邮箱$用户名---->邮箱$md5(用户名)or NULL$用户名
+// 2.4再次查询数据库 邮箱$用户名$密码----->邮箱$md5(用户名)or NULL$用户名$密码
 func Unique_email_mysql(string2 string) (error, tool.Outcome) {
 	logs := "Unique_email_mysql:"
 	outcometmp := tool.Outcome{
@@ -42,7 +42,7 @@ func Unique_email_mysql(string2 string) (error, tool.Outcome) {
 	var username string
 	query := "SELECT username FROM user_email_login WHERE email = ?"
 	mylink.Sqldb.QueryRow(query, email).Scan(&username)
-	//TODO 查询数据库
+	// 查询数据库
 	if username == "" {
 		//没找到，可以插入
 		remainder = email + "$" + "NULL" + "$" + remainder
@@ -75,8 +75,8 @@ func Unique_email_redis(ags string) (error, tool.Outcome) {
 		return err2, outcometmp
 	}
 
-	link, err2 := mylink.NewredisLink(0)
-	if err2 != nil {
+	link, err3 := mylink.NewredisLink(0)
+	if err2 != nil || err3 != nil {
 		outcometmp.Output = logs + "Redis ERR"
 		return err2, outcometmp
 	}

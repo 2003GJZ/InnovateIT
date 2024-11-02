@@ -4,7 +4,6 @@ import (
 	"InnovateIT_UserManagement/mylink"
 	"InnovateIT_UserManagement/tool"
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 )
 
