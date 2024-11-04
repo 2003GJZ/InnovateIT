@@ -45,23 +45,21 @@ func Unique_email_mysql(string2 string) (error, tool.Outcome) {
 	// 查询数据库
 	if username == "" {
 		//没找到，可以插入
-		remainder = email + "$" + "NULL" + "$" + remainder
 		outcometmp.Goon = true
 		outcometmp.Bitmap = 1
 		outcometmp.Output = logs + "成功"
-		outcometmp.Nextinput = remainder
+		outcometmp.Nextinput = email + "$" + "NULL" + "$" + remainder
 	} else {
-		remainder = email + "$" + tool.GetMd5(username) + "$"
 		outcometmp.Goon = false
 		outcometmp.Bitmap = 0
 		outcometmp.Output = logs + "已存在"
-		outcometmp.Nextinput = remainder
+		outcometmp.Nextinput = email + "$" + tool.GetMd5(username) + "$"
 	}
 
 	return nil, outcometmp
 }
 
-// 1.1缓存查询验证
+// 1.1缓存查询验证  邮箱$用户名------>邮箱$用户名
 func Unique_email_redis(ags string) (error, tool.Outcome) {
 	logs := "Unique_email_redis:"
 	outcometmp := tool.Outcome{
@@ -85,7 +83,7 @@ func Unique_email_redis(ags string) (error, tool.Outcome) {
 	if username == "NULL" {
 		//不存在可以注册
 		outcometmp.Output = logs + "ok"
-		outcometmp.Bitmap = 5
+		outcometmp.Bitmap = 7
 		outcometmp.Goon = true
 		outcometmp.Nextinput = ags
 

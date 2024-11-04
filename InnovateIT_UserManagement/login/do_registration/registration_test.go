@@ -8,7 +8,10 @@ import (
 	"testing"
 )
 
-func init() {
+func init() { // 设置哈希字段
+	//key := "myhash"
+	//field := "myfield"
+	//value := "myvalue"
 	mylink.FileConfigJSON("/home/gjz/项目/go/InnovateIT/Configuration/configure.json") //初始化配置文件
 	mylink.NewredisLink(0)                                                           //初始化redis
 	mylink.NewmysqlLink()                                                            //初始化mysql

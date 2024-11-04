@@ -40,5 +40,6 @@ func Addcache_email(string2 string) (error, tool.Outcome) {
 		outcometmp.Goon = false
 		outcometmp.Output = logs + "The user is registered"
 	}
+	outcometmp.Bitmap = 1
 	return nil, outcometmp
 }

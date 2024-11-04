@@ -94,6 +94,7 @@ func (root *Liabilitylist) RunNodeList(ags string, result_partition string) (err
 			if outcometmp.Bitmap > 1 {
 				i += int(outcometmp.Bitmap/2) - 1
 			}
+			tmp = outcometmp.Nextinput
 
 		}
 	}
