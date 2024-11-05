@@ -26,6 +26,7 @@ func sendEmail(to string, code string) error {
 	// 发件人邮箱信息
 	from := "1820284294@qq.com"    // QQ邮箱
 	password := "dhielscygzirdfea" // 替换为你的QQ邮箱授权码
+	expirationMinutes := 3         // 验证码有效期，单位为分钟
 
 	// 邮件服务器配置
 	mail := gomail.NewMessage()
@@ -33,7 +34,21 @@ func sendEmail(to string, code string) error {
 
 	mail.SetHeader("To", to)
 	mail.SetHeader("Subject", "验证码")
-	mail.SetBody("text/html", fmt.Sprintf("你的验证码是：<b>%s</b>", code))
+	mail.SetBody("text/html", fmt.Sprintf(`
+<html>
+<head>
+    <title>验证码通知</title>
+</head>
+<body>
+    <p>尊敬的用户，您好！</p>
+    <p>您正在注册“幸福年华志愿行”。</p>
+    <p>您的验证码是：<strong>%s</strong></p>
+    <p>请在 %d 分钟内使用此验证码完成验证。</p>
+    <p>如果这不是您本人的操作，请忽略此邮件！</p>
+    <p>感谢您对我们服务的使用。</p>
+</body>
+</html>
+`, code, expirationMinutes))
 
 	d := gomail.NewDialer("smtp.qq.com", 587, from, password)
 
