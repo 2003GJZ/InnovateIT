@@ -67,7 +67,7 @@ func Captcha_email_send(ags string) (error, tool.Outcome) {
 		logs, "", 0, false,
 	}
 	//先查redis看是否存在
-	link, _ := mylink.NewredisLink(0)
+	link, _ := mylink.NewRedisLink(0)
 	email, _, err := tool.SplitString(ags, "$")
 	if err != nil {
 		outcometmp.Output = logs + "参数解析错误"
@@ -116,7 +116,7 @@ func Captcha_email_verify(ags string) (error, tool.Outcome) {
 		logs, "", 0, false,
 	}
 	//先查redis看是否存在
-	link, _ := mylink.NewredisLink(0)
+	link, _ := mylink.NewRedisLink(0)
 	email, s2, err := tool.SplitString(ags, "$")
 	code, s3, err1 := tool.SplitString(s2, "$")
 

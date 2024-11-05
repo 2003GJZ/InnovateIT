@@ -23,7 +23,7 @@ type RedisLink struct {
 	Client *redis.Client
 }
 
-func NewredisLink(databasenum int) (*RedisLink, error) {
+func NewRedisLink(databasenum int) (*RedisLink, error) {
 	if configure == nil {
 		return nil, fmt.Errorf("configure is nil")
 	}
@@ -35,13 +35,13 @@ func NewredisLink(databasenum int) (*RedisLink, error) {
 		DB:       databasenum, // 默认数据库为 0
 	})
 	// 测试链接
-	if !redis_just_once {
+	if !REDIS_JUST_ONCE {
 		_, err := rdb.Ping(ctx).Result()
 		if err != nil {
 			return nil, err
 		}
 		log.Println("Redis 链接成功")
-		redis_just_once = true
+		REDIS_JUST_ONCE = true
 	}
 
 	//创建链接不测试链接
@@ -54,5 +54,5 @@ func NewredisLink(databasenum int) (*RedisLink, error) {
 }
 
 func GetredisLink() (*RedisLink, error) {
-	return NewredisLink(0)
+	return NewRedisLink(0)
 }

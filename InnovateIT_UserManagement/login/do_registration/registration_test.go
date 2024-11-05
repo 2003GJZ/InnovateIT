@@ -13,8 +13,8 @@ import (
 func init() { // 设置哈希字段
 	key := "email_captcha"
 	mylink.FileConfigJSON("/home/gjz/项目/go/InnovateIT/Configuration/configure.json") //初始化配置文件
-	link, err := mylink.NewredisLink(0)                                              //初始化redis
-	_, err1 := mylink.NewmysqlLink()
+	link, err := mylink.NewRedisLink(0)                                              //初始化redis
+	_, err1 := mylink.NewMysqlLink()
 	if err != nil || err1 != nil {
 		fmt.Println("redis连接失败")
 	}

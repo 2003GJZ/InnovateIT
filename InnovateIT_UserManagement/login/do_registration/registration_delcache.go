@@ -16,7 +16,7 @@ func Delcache_email(string2 string) (error, tool.Outcome) {
 		outcometmp.Output = logs + "SplitStringERR"
 		return err2, outcometmp
 	}
-	link, err3 := mylink.NewredisLink(0)
+	link, err3 := mylink.NewRedisLink(0)
 	if err3 != nil {
 		outcometmp.Output = logs + " redis Link err"
 		return err3, outcometmp

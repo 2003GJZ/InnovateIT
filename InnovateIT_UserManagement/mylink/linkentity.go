@@ -5,7 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var redis_just_once bool //redis 只连接测试，仅仅一次
+var REDIS_JUST_ONCE bool //redis 只连接测试，仅仅一次
 var configure *Config    //配置文件
 var Sqldb *sql.DB
 

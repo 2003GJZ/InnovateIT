@@ -73,7 +73,7 @@ func Unique_email_redis(ags string) (error, tool.Outcome) {
 		return err2, outcometmp
 	}
 
-	link, err3 := mylink.NewredisLink(0)
+	link, err3 := mylink.NewRedisLink(0)
 	if err2 != nil || err3 != nil {
 		outcometmp.Output = logs + "Redis ERR"
 		return err2, outcometmp

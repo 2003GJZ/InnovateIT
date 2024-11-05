@@ -22,7 +22,7 @@ func Addcache_email(string2 string) (error, tool.Outcome) {
 		return err2, outcometmp
 	}
 
-	link, _ := mylink.NewredisLink(0)
+	link, _ := mylink.NewRedisLink(0)
 	htable := tool.Redis_htable{
 		"email_username",
 		link,

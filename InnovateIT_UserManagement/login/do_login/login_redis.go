@@ -19,7 +19,7 @@ func Login_redis_phone(string2 string) (error, tool.Outcome) { //查redis
 		return err2, outcometmp
 	}
 
-	link, err4 := mylink.NewredisLink(0)
+	link, err4 := mylink.NewRedisLink(0)
 	if err4 != nil {
 		outcometmp.Output = logs + "redis link ERR"
 		return err2, outcometmp

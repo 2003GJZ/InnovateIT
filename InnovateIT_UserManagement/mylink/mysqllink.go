@@ -6,7 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func NewmysqlLink() (*sql.DB, error) {
+func NewMysqlLink() (*sql.DB, error) {
 	if Sqldb == nil {
 		if configure == nil {
 			return nil, fmt.Errorf("配置文件未加载")
@@ -39,7 +39,7 @@ func NewmysqlLink() (*sql.DB, error) {
 func GetSqldb() (*sql.DB, error) {
 	if Sqldb == nil {
 
-		db, err := NewmysqlLink() //初始化数据库连接
+		db, err := NewMysqlLink() //初始化数据库连接
 		if err != nil {
 			//数据库链接失败
 			return nil, err

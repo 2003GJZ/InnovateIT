@@ -20,7 +20,7 @@ func Addcache_login_email(string2 string) (error, tool.Outcome) {
 	}
 	outcometmp.Nextinput = s3
 
-	link, _ := mylink.NewredisLink(0)
+	link, _ := mylink.NewRedisLink(0)
 	htable := tool.Redis_htable{
 		"login_email",
 		link,
