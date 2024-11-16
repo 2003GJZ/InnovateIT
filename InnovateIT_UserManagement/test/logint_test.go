@@ -10,7 +10,7 @@ import (
 )
 
 func TestRedis(t *testing.T) {
-	link, err2 := mylink.NewredisLink(0)
+	link, err2 := mylink.NewRedisLink(0)
 	if err2 != nil {
 		log.Fatalf("HGET error: %v", err2)
 	}
