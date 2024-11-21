@@ -7,17 +7,6 @@ import (
 	"log"
 )
 
-/*
-if err == redis.Nil {
-		fmt.Println("field3 does not exist")
-	} else if err != nil {
-		log.Fatalf("HGET error: %v", err)
-	} else {
-		fmt.Println("field1:", val1)
-	}
-*/
-// 定义结构体以匹配 JSON 文件的结构
-
 type RedisLink struct {
 	Ctx    context.Context
 	Client *redis.Client
